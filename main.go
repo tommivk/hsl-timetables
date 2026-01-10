@@ -67,8 +67,14 @@ func main() {
 		URL:              "/",
 	})
 
+	menu := app.NewMenu()
+	menu.Add("Quit").OnClick(func(ctx *application.Context) {
+		app.Quit()
+	})
+
 	systray := app.SystemTray.New()
 	systray.AttachWindow(window).WindowOffset(5)
+	systray.SetMenu(menu)
 
 	if runtime.GOOS == "darwin" {
 		systray.SetTemplateIcon(icons.SystrayMacTemplate)
