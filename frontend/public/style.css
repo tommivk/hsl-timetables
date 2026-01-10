@@ -2,3 +2,21 @@ html,
 body {
   margin: 0;
 }
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.schedule {
+  height: 600px;
+  width: 300px;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.schedule::-webkit-scrollbar {
+  display: none;
+}
