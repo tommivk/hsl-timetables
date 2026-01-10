@@ -9,7 +9,6 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/icons"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.
@@ -19,6 +18,9 @@ import (
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+//go:embed logo.svg
+var logo []byte
 
 func init() {
 	// Register a custom event whose associated data type is string.
@@ -76,7 +78,7 @@ func main() {
 	systray.SetMenu(menu)
 
 	if runtime.GOOS == "darwin" {
-		systray.SetTemplateIcon(icons.SystrayMacTemplate)
+		systray.SetTemplateIcon(logo)
 	}
 
 	// Initialize database
