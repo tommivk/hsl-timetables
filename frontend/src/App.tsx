@@ -35,7 +35,7 @@ function App() {
     <div className="container">
       <select onChange={(e) => setTimetableSrc(e.target.value)}>
         {timetables.map(({ Name, Src }) => (
-          <option key={Src} value={Src}>
+          <option key={Src} value={Src} selected={timetableSrc === Src}>
             {Name}
           </option>
         ))}
