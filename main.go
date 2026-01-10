@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"embed"
 	_ "embed"
 	"log"
@@ -81,22 +80,7 @@ func main() {
 	}
 
 	// Initialize database
-	db, err := sql.Open("sqlite3", "./timetables.db")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	sqlStmt := `CREATE TABLE IF NOT EXISTS timetables (
-					id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	 				name TEXT,
-	  				src TEXT
-				)`
-
-	_, err = db.Exec(sqlStmt)
-	if err != nil {
-		log.Fatal(err)
-	}
+	InitDb()
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
@@ -109,7 +93,7 @@ func main() {
 	}()
 
 	// Run the application. This blocks until the application has been exited.
-	err = app.Run()
+	err := app.Run()
 
 	// If an error occurred while running the application, log it and exit.
 	if err != nil {

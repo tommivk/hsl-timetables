@@ -3,6 +3,8 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
+	"path/filepath"
 )
 
 type DBService struct{}
@@ -13,8 +15,35 @@ type Timetable struct {
 	Src  string
 }
 
+func GetDbPath() string {
+	base, _ := os.UserConfigDir()
+	appDir := filepath.Join(base, "HSLTimetables")
+	os.MkdirAll(appDir, 0755)
+	path := filepath.Join(appDir, "timetables.db")
+	return path
+}
+
+func InitDb() {
+	db, err := sql.Open("sqlite3", GetDbPath())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	sqlStmt := `CREATE TABLE IF NOT EXISTS timetables (
+					id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	 				name TEXT,
+	  				src TEXT
+				)`
+
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func (d *DBService) AddTimetable(name, src string) {
-	db, err := sql.Open("sqlite3", "./timetables.db")
+	db, err := sql.Open("sqlite3", GetDbPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,7 +55,7 @@ func (d *DBService) AddTimetable(name, src string) {
 }
 
 func (d *DBService) GetTimetables() []Timetable {
-	db, err := sql.Open("sqlite3", "./timetables.db")
+	db, err := sql.Open("sqlite3", GetDbPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +82,7 @@ func (d *DBService) GetTimetables() []Timetable {
 }
 
 func (d *DBService) DeleteTimetable(id string) {
-	db, err := sql.Open("sqlite3", "./timetables.db")
+	db, err := sql.Open("sqlite3", GetDbPath())
 	if err != nil {
 		log.Fatal(err)
 	}
