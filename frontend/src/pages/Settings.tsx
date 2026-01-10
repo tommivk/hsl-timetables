@@ -12,7 +12,8 @@ const Settings = ({ updateTimetables, timetables, setPage }: Props) => {
   const [nameInput, setNameInput] = useState("");
   const [srcInput, setSrcInput] = useState("");
 
-  const addTimetable = async () => {
+  const addTimetable = async (e) => {
+    e.preventDefault();
     await DBService.AddTimetable(nameInput, srcInput);
     await updateTimetables();
     setNameInput("");
