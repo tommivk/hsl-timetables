@@ -2,6 +2,7 @@ html,
 body {
   margin: 0;
   color: whitesmoke;
+  background: rgb(35, 74, 148);
 }
 
 .container {
