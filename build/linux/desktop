@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=My Product
+Comment=A hsl-system-tray application
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/hsl-system-tray %u
+Terminal=false
+Type=Application
+Icon=hsl-system-tray
+Categories=Utility;
+StartupWMClass=hsl-system-tray
+
+ 
