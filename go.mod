@@ -2,7 +2,10 @@ module changeme
 
 go 1.25
 
-require github.com/wailsapp/wails/v3 v3.0.0-alpha.58
+require (
+	github.com/mattn/go-sqlite3 v1.14.33
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.58
+)
 
 require (
 	dario.cat/mergo v1.0.1 // indirect

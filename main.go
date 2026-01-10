@@ -1,12 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"embed"
 	_ "embed"
 	"log"
 	"runtime"
 	"time"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/icons"
 )
@@ -39,7 +41,9 @@ func main() {
 	app := application.New(application.Options{
 		Name:        "hsl-system-tray",
 		Description: "",
-		Services:    []application.Service{},
+		Services: []application.Service{
+			application.NewService(&DBService{}),
+		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
 		},
@@ -70,6 +74,24 @@ func main() {
 		systray.SetTemplateIcon(icons.SystrayMacTemplate)
 	}
 
+	// Initialize database
+	db, err := sql.Open("sqlite3", "./timetables.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	sqlStmt := `CREATE TABLE IF NOT EXISTS timetables (
+					id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	 				name TEXT,
+	  				src TEXT
+				)`
+
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
 	go func() {
@@ -81,7 +103,7 @@ func main() {
 	}()
 
 	// Run the application. This blocks until the application has been exited.
-	err := app.Run()
+	err = app.Run()
 
 	// If an error occurred while running the application, log it and exit.
 	if err != nil {
