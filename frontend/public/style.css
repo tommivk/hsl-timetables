@@ -54,3 +54,13 @@ button[type="submit"] {
   bottom: 8px;
   right: 8px;
 }
+
+.settings-icon {
+  cursor: pointer;
+  z-index: 9000;
+  top: 16px;
+  right: 66px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}

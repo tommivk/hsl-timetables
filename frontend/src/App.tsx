@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { DBService } from "../bindings/changeme";
 import type { Timetable } from "../bindings/changeme/models";
+import settingsIcon from "./settings.svg";
 
 function App() {
-  const [page, setPage] = useState<"main" | "settings">("settings");
+  const [page, setPage] = useState<"main" | "settings">("main");
 
   const [nameInput, setNameInput] = useState("");
   const [srcInput, setSrcInput] = useState("");
@@ -73,10 +74,16 @@ function App() {
           </option>
         ))}
       </select>
-
       {timetableSrc && (
         <iframe className="schedule" src={timetableSrc}></iframe>
       )}
+      <img
+        onClick={() => setPage("settings")}
+        src={settingsIcon}
+        className="settings-icon"
+        alt=""
+      />
+      ;
     </div>
   );
 }
